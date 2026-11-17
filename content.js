@@ -35,7 +35,7 @@ const STREAMING_RULES = [
     ],
     nextSelectors: ['[data-uia="next-episode-seamless-button"]'],
     skipTexts: ["pular abertura", "skip intro", "pular resumo", "skip recap", "pular anúncio", "pular anuncio", "skip ad", "pular créditos", "pular creditos", "skip credits"],
-    nextTexts: []
+    nextTexts: ["próximo episódio", "next episode", "reproduzir próximo episódio", "play next episode"]
   },
   {
     id: "primevideo",
