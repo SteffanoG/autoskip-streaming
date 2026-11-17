@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AutoSkip — imagem de loja</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { width: 1280px; height: 800px; margin: 0; padding: 58px 72px; overflow: hidden; background: radial-gradient(ellipse at 25% 48%, #243a59 0, #131d2d 38%, #0c111b 78%); color: #f6f8fc; font-family: Inter, "Segoe UI", sans-serif; }
+    .top { display: flex; align-items: center; gap: 14px; color: #c6d0df; font-size: 16px; letter-spacing: .2px; }
+    .top img { width: 42px; height: 42px; }
+    main { display: grid; grid-template-columns: 1fr 400px; gap: 74px; align-items: center; height: 630px; }
+    .copy { max-width: 610px; }
+    .eyebrow { color: #79e1bc; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; font-weight: 750; }
+    h1 { font-size: 58px; line-height: 1.04; letter-spacing: -2.6px; margin: 18px 0; }
+    .description { max-width: 520px; color: #c1cada; font-size: 21px; line-height: 1.52; }
+    .chips { display: flex; gap: 10px; margin-top: 30px; }
+    .chip { padding: 10px 14px; border: 1px solid #3b4a5e; border-radius: 99px; color: #e6ecf4; font-size: 13px; }
+    .visual { height: 280px; margin-top: 46px; border: 1px solid #34445a; border-radius: 22px; overflow: hidden; padding: 22px; background: linear-gradient(145deg, #202f47, #131a28 70%); }
+    .hub-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+    .hub-head strong { font-size: 15px; }
+    .hub-head span { color: #91a3bb; font-size: 11px; }
+    .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .service-card { height: 48px; display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid #3a4b61; border-radius: 10px; background: #172230; color: #e9eef5; font-size: 13px; font-weight: 650; }
+    .service-mark { width: 28px; height: 28px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 8px; background: #25394b; color: #87e7c6; font-size: 10px; font-weight: 800; }
+    .mark-disney { background: #16365a; color: #fff; }
+    .mark-netflix { background: #291d25; color: #e50914; font: 700 20px Georgia,serif; }
+    .mark-prime { background: #173752; color: #8bd5ff; font-size: 8px; }
+    .mark-max { background: #27223d; color: #c09aff; font-size: 14px; letter-spacing: -1px; }
+    .mark-crunchy { position: relative; border-radius: 8px; background: #f47521; color: transparent; font-size: 0; }
+    .mark-crunchy::before { content: ""; position: absolute; width: 14px; height: 14px; top: 6px; left: 6px; border: 2px solid #fff; border-right-color: transparent; border-radius: 50%; transform: rotate(-32deg); }
+    .mark-crunchy::after { content: ""; position: absolute; width: 4px; height: 4px; top: 12px; left: 12px; border-radius: 50%; background: #fff; }
+    .panel-label { margin: 0 0 14px 4px; color: #a9b5c7; font-size: 13px; letter-spacing: .3px; }
+    .popup-frame { width: 380px; height: 572px; padding: 10px; border: 1px solid #39475a; border-radius: 18px; background: #0c111b; box-shadow: 0 26px 70px #0008; }
+    iframe { width: 360px; height: 550px; border: 0; display: block; }
+    footer { position: absolute; left: 72px; bottom: 30px; color: #a9b5c7; font-size: 12px; }
+    .dot { display: inline-block; width: 7px; height: 7px; margin: 0 9px 1px 0; border-radius: 50%; background: #63d6b0; }
+  </style>
+</head>
+<body>
+  <div class="top"><img src="/icons/icon.svg" alt=""><span>AutoSkip para Streaming</span></div>
+  <main>
+    <section class="copy">
+      <div class="eyebrow" data-i18n="previewEyebrow">Mais tempo assistindo</div>
+      <h1><span data-i18n="previewHeadlineOne">Seu ritmo.</span><br><span data-i18n="previewHeadlineTwo">Suas escolhas.</span></h1>
+      <p class="description" data-i18n="previewDescription">Pule aberturas e resumos. Avance episódios só se quiser. Você controla cada automação no popup.</p>
+      <div class="chips"><span class="chip" data-i18n="previewChipSkip">Pular abertura</span><span class="chip" data-i18n="previewChipNext">Avançar episódio</span></div>
+      <div class="visual" aria-label="Hub de serviços de streaming compatíveis">
+        <div class="hub-head"><strong data-i18n="previewHubTitle">Serviços no hub</strong><span data-i18n="previewHubMeta">domínios suportados</span></div>
+        <div class="service-grid">
+          <div class="service-card"><span class="service-mark mark-disney">D+</span>Disney+</div>
+          <div class="service-card"><span class="service-mark mark-netflix">N</span>Netflix</div>
+          <div class="service-card"><span class="service-mark mark-prime">prime</span>Prime Video</div>
+          <div class="service-card"><span class="service-mark mark-max">max</span>Max</div>
+          <div class="service-card"><span class="service-mark mark-crunchy" aria-hidden="true"></span><span>Crunchyroll</span></div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <p class="panel-label" data-i18n="previewPopupLabel">Escolha o que o AutoSkip faz</p>
+      <div class="popup-frame"><iframe title="Popup do AutoSkip" src="/popup.html?lang=pt_BR"></iframe></div>
+    </section>
+  </main>
+  <footer><span class="dot"></span><span data-i18n="previewFooter">Preferências salvas no navegador · Nenhum dado enviado</span></footer>
+  <script>
+    const language = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'pt_BR';
+    document.documentElement.lang = language === 'en' ? 'en' : 'pt-BR';
+    const popup = document.querySelector('iframe');
+    popup.src = `/popup.html?lang=${language}`;
+    for (const element of document.querySelectorAll('[data-i18n]')) {
+      const message = window.chrome?.i18n?.getMessage(element.dataset.i18n);
+      if (message) element.textContent = message;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="extensionName">AutoSkip para Streaming</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, "Segoe UI", sans-serif; }
+    * { box-sizing: border-box; }
+    body { width: 360px; margin: 0; padding: 20px; background: #10151f; color: #f4f6fb; }
+    header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    header img { width: 42px; height: 42px; }
+    h1 { margin: 0; font-size: 17px; letter-spacing: -.2px; }
+    .subtitle { margin: 4px 0 0; color: #9ba7ba; font-size: 12px; }
+    .card { border: 1px solid #283244; border-radius: 12px; background: #171e2b; }
+    .master { padding: 15px 14px; margin-bottom: 12px; }
+    .setting { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 14px; }
+    .setting + .setting { border-top: 1px solid #283244; }
+    .label { display: block; font-size: 13px; font-weight: 650; }
+    .hint { display: block; margin-top: 4px; color: #9ba7ba; font-size: 11px; line-height: 1.35; }
+    .switch { position: relative; flex: 0 0 42px; width: 42px; height: 24px; }
+    .switch input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+    .track { position: absolute; inset: 0; border-radius: 99px; background: #465168; transition: background .16s; cursor: pointer; }
+    .track::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: white; transition: transform .16s; }
+    .switch input:checked + .track { background: #63d6b0; }
+    .switch input:checked + .track::after { transform: translateX(18px); }
+    .switch input:focus-visible + .track { outline: 3px solid #91b7ff; outline-offset: 2px; }
+    .switch input:disabled + .track { opacity: .45; cursor: not-allowed; }
+    footer { min-height: 26px; padding-top: 14px; color: #8592a8; font-size: 11px; }
+    #status { color: #63d6b0; }
+    .suggestion { margin-top: 12px; padding: 14px; }
+    .suggestion h2 { margin: 0; font-size: 13px; }
+    .suggestion p { margin: 5px 0 10px; color: #9ba7ba; font-size: 11px; line-height: 1.4; }
+    .suggestion-row { display: flex; gap: 8px; }
+    .suggestion input { min-width: 0; flex: 1; padding: 9px 10px; border: 1px solid #39475a; border-radius: 8px; background: #10151f; color: #f4f6fb; font: inherit; font-size: 12px; }
+    .suggestion input:focus-visible, .suggestion button:focus-visible { outline: 2px solid #91b7ff; outline-offset: 2px; }
+    .suggestion button { padding: 9px 11px; border: 0; border-radius: 8px; background: #63d6b0; color: #10221d; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .suggestion button:disabled { opacity: .45; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="icons/icon-128.png" alt="">
+    <div>
+          <h1 data-i18n="extensionName">AutoSkip para Streaming</h1>
+      <p class="subtitle" data-i18n="popupSubtitle">Você escolhe o que automatizar</p>
+    </div>
+  </header>
+
+  <section class="card master" aria-label="Ativação" data-i18n-aria="activateLabel">
+    <div class="setting" style="padding:0; min-height:42px">
+      <div><span class="label" data-i18n="activateLabel">Ativar AutoSkip</span><span class="hint" data-i18n="activateHint">Aplicado nos serviços compatíveis</span></div>
+      <label class="switch"><input id="enabled" type="checkbox" aria-label="Ativar AutoSkip" data-i18n-aria="activateAria"><span class="track"></span></label>
+    </div>
+  </section>
+
+  <section class="card" aria-label="Ações automáticas" data-i18n-aria="actionsAria">
+    <div class="setting">
+      <div><span class="label" data-i18n="skipLabel">Pular abertura e resumo</span><span class="hint" data-i18n="skipHint">Ativa os botões de pular quando aparecem</span></div>
+      <label class="switch"><input id="skipIntro" type="checkbox" aria-label="Pular abertura e resumo" data-i18n-aria="skipAria"><span class="track"></span></label>
+    </div>
+    <div class="setting">
+      <div><span class="label" data-i18n="nextLabel">Avançar episódio</span><span class="hint" data-i18n="nextHint">Ativa o botão de próximo episódio</span></div>
+      <label class="switch"><input id="nextEpisode" type="checkbox" aria-label="Avançar episódio" data-i18n-aria="nextAria"><span class="track"></span></label>
+    </div>
+  </section>
+
+  <form id="suggestionForm" class="card suggestion">
+    <h2 data-i18n="suggestionTitle">Faltou algum streaming?</h2>
+    <p data-i18n="suggestionHint">Sugira um serviço. Vamos abrir um e-mail para você revisar e enviar.</p>
+    <div class="suggestion-row">
+      <input id="suggestion" name="suggestion" type="text" maxlength="80" autocomplete="off" placeholder="Nome do serviço" data-i18n-placeholder="suggestionPlaceholder" aria-label="Nome do streaming para sugerir" data-i18n-aria="suggestionAria" required>
+      <button id="sendSuggestion" type="submit" data-i18n="suggestionButton">Sugerir</button>
+    </div>
+    <span class="hint" data-i18n="suggestionPrivacy">Não inclua dados pessoais. A sugestão não é salva pela extensão.</span>
+  </form>
+
+  <footer>
+    <span id="status" role="status" aria-live="polite" data-i18n="statusPrivacy">Preferências salvas somente neste navegador.</span>
+    <span class="hint" style="margin-top:8px" data-i18n="pageAccessDisclosure">Lê rótulos dos controles de reprodução nos serviços compatíveis. Não envia dados.</span>
+  </footer>
+  <script src="popup.js"></script>
+</body>
+</html>

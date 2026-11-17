@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_extensionName__",
+  "version": "2.4.0",
+  "description": "__MSG_extensionDescription__",
+  "default_locale": "pt_BR",
+  "permissions": ["storage"],
+  "icons": {
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "__MSG_extensionName__",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "icons/icon-128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.disneyplus.com/*",
+        "https://*.netflix.com/*",
+        "https://*.primevideo.com/*",
+        "https://*.max.com/*",
+        "https://*.crunchyroll.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

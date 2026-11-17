@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AutoSkip — harness local</title>
+  <style>
+    body { font: 16px system-ui, sans-serif; background: #121212; color: #f5f5f5; padding: 24px; }
+    button { padding: 10px 16px; margin: 8px; cursor: pointer; }
+    .fixture { border: 1px solid #555; border-radius: 8px; padding: 16px; margin: 12px 0; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <h1>AutoSkip — painel de validação local</h1>
+  <p id="scenario"></p>
+  <pre id="results" aria-live="polite">{}</pre>
+
+  <section class="fixture" data-platform="disneyplus">
+    <h2>Disney+</h2>
+    <button data-testid="skip-button" onclick="recordSuccess('skip', this)">Skip Intro</button>
+    <div data-testid="up-next-container">
+      <button data-testid="up-next-button" onclick="recordSuccess('next', this)">Play Next Episode</button>
+      <button aria-label="Close" onclick="recordFailure('close')">Fechar</button>
+    </div>
+  </section>
+
+  <section class="fixture" data-platform="netflix">
+    <h2>Netflix</h2>
+    <button data-uia="player-skip-intro" onclick="recordSuccess('skip', this)">Pular Abertura</button>
+    <button data-uia="next-episode-seamless-button" onclick="recordSuccess('next', this)">Próximo Episódio</button>
+  </section>
+
+  <section class="fixture" data-platform="primevideo">
+    <h2>Prime Video</h2>
+    <button class="atvwebplayersdk-skipelement-button" onclick="recordSuccess('skip', this)">Pular Introdução</button>
+    <button class="atvwebplayersdk-nextupcard-button" onclick="recordSuccess('next', this)">Próximo Episódio</button>
+  </section>
+
+  <section class="fixture" data-platform="max">
+    <h2>Max</h2>
+    <button aria-label="Skip Intro" onclick="recordSuccess('skip', this)">Ignorar introdução</button>
+    <button aria-label="Next Episode" onclick="recordSuccess('next', this)">Continuar</button>
+  </section>
+
+  <section class="fixture" data-platform="crunchyroll">
+    <h2>Crunchyroll</h2>
+    <button aria-label="Skip Intro" onclick="recordSuccess('skip', this)">Skip Intro</button>
+    <button aria-label="Next Episode" onclick="recordSuccess('next', this)">Next Episode</button>
+  </section>
+
+  <section class="fixture" data-platform="generic">
+    <h2>Fallback genérico</h2>
+    <button onclick="recordSuccess('skip', this)">Skip Intro</button>
+    <button onclick="recordSuccess('next', this)">Next Episode</button>
+  </section>
+
+  <script>
+    const selected = new URLSearchParams(location.search).get('platform') || 'disneyplus';
+    document.querySelector('#scenario').textContent = `Cenário: ${selected}`;
+    document.querySelectorAll('[data-platform]').forEach(section => {
+      section.hidden = section.dataset.platform !== selected;
+    });
+    window.results = {};
+    function recordSuccess(action, button) {
+      window.results[action] = (window.results[action] || 0) + 1;
+      document.querySelector('#results').textContent = JSON.stringify(window.results);
+      button.remove();
+    }
+    function recordFailure(action) {
+      window.results[action] = false;
+      document.querySelector('#results').textContent = JSON.stringify(window.results);
+    }
+  </script>
+  <script src="content.js"></script>
+</body>
+</html>

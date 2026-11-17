@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "test": "node run-tests.js",
+    "build:store-assets": "node store-assets/build-assets.js",
+    "package:store": "npm run build:store-assets && powershell -NoProfile -ExecutionPolicy Bypass -File ./package-store.ps1"
+  },
+  "devDependencies": {
+    "playwright": "^1.65.0"
+  }
+}
