@@ -59,9 +59,25 @@ const STREAMING_RULES = [
     id: "crunchyroll",
     domain: "crunchyroll.com",
     name: "Crunchyroll",
-    skipSelectors: ['button[aria-label="Skip Intro"]', 'button[aria-label="Pular abertura"]'],
+    skipSelectors: [
+      '[data-testid="skipButton"] [tabindex="0"]',
+      '[data-testid="skipButton"]',
+      'button[aria-label*="Skip Intro" i]',
+      'button[aria-label*="Skip Recap" i]',
+      'button[aria-label*="Skip Credits" i]',
+      'button[aria-label*="Pular abertura" i]',
+      'button[aria-label*="Pular resumo" i]',
+      'button[aria-label*="Pular créditos" i]',
+      'button[data-testid*="skip-intro" i]',
+      'button[data-testid*="skip-recap" i]',
+      'button[data-testid*="skip-credit" i]'
+    ],
     nextSelectors: [],
-    skipTexts: ["skip intro", "pular abertura"],
+    skipTexts: [
+      "skip intro", "pular abertura", "skip recap", "pular resumo",
+      "skip credits", "pular créditos", "skip outro", "skip preview",
+      "pular prévia", "pular previa"
+    ],
     nextTexts: []
   }
 ];
@@ -117,9 +133,10 @@ function isEnabled(element) {
 }
 
 function isVisible(element) {
-  if (element.closest("[hidden], [aria-hidden='true'], [inert]")) return false;
+  if (element.closest("[hidden], [aria-hidden='true'], [inert], [class~='kat:opacity-0'], [class~='kat:pointer-events-none']")) return false;
   const style = window.getComputedStyle(element);
-  return style.display !== "none" && style.visibility !== "hidden" && element.getClientRects().length > 0;
+  return style.display !== "none" && style.visibility !== "hidden" &&
+    Number(style.opacity) !== 0 && element.getClientRects().length > 0;
 }
 
 function isNetflixPlayerControl(element) {

@@ -1,6 +1,6 @@
 # AutoSkip for Streaming
 
-Manifest V3 extension localized in Brazilian Portuguese and English. It skips intros/recaps and advances to the next episode on Disney+, Netflix, Prime Video, and Max. On Netflix, it also recognizes recap, credits, and ad skip controls when the platform provides them. On Crunchyroll, it recognizes the official Skip Intro control when available; availability depends on the title and the platform.
+Manifest V3 extension localized in Brazilian Portuguese and English. It skips intros/recaps and advances to the next episode on Disney+, Netflix, Prime Video, and Max. On Netflix, it also recognizes recap, credits, and ad skip controls when the platform provides them. On Crunchyroll, it recognizes intro, recap, and credits skip controls when available; availability depends on the title and the platform.
 
 ## Features
 

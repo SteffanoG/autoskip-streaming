@@ -5,6 +5,7 @@ const path = require('node:path');
 const { chromium } = require('playwright');
 
 const ROOT = __dirname;
+const MANIFEST = JSON.parse(fs.readFileSync(path.join(ROOT, 'manifest.json'), 'utf8'));
 const FIXTURES = new Set(['test-harness.html', 'content.js', 'popup.html', 'popup.js', 'icons/icon-128.png']);
 const LOCALES = Object.fromEntries(['pt_BR', 'en'].map(locale => [
   locale,
@@ -44,7 +45,7 @@ async function run() {
     for (const scenario of SCENARIOS) {
       const page = await browser.newPage();
       await page.goto(`${baseUrl}/?platform=${scenario.platform}`, { waitUntil: 'domcontentloaded' });
-      const expectedSkips = scenario.platform === 'netflix' ? 4 : 1;
+      const expectedSkips = scenario.platform === 'netflix' ? 4 : scenario.platform === 'crunchyroll' ? 3 : 1;
       if (scenario.platform === 'netflix') {
         await page.waitForFunction(({ expectedSkips }) => window.results.skip === expectedSkips && window.results.next === 1, { expectedSkips }, { timeout: 15000 });
         assert.equal(await page.evaluate(() => window.results.wrongNext), undefined, 'Netflix não deve clicar em rótulos fora do player');
@@ -56,6 +57,9 @@ async function run() {
       console.log(`✓ ${scenario.platform}: ações corretas`);
       await page.close();
     }
+
+    const crunchyScript = MANIFEST.content_scripts.find(script => script.matches.some(match => match.includes('crunchyroll.com')));
+    assert.equal(crunchyScript?.all_frames, true, 'Crunchyroll deve executar o script também dentro do iframe do player');
 
     const popup = await browser.newPage();
     await popup.addInitScript(({ catalogs }) => {

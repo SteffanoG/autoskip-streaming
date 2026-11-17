@@ -2,7 +2,7 @@
 
 Versão em inglês: [README.en.md](README.en.md).
 
-Extensão Manifest V3 localizada em português do Brasil e inglês. Pula aberturas/resumos e avança para o próximo episódio em Disney+, Netflix, Prime Video e Max. Na Netflix, também reconhece controles para pular resumos, créditos e anúncios quando disponibilizados pela plataforma. Na Crunchyroll, reconhece o botão Skip Intro; a disponibilidade depende do título e da própria plataforma. O popup permite controlar as ações e preparar um e-mail de sugestão para `autoskipstreamings@outlook.com`.
+Extensão Manifest V3 localizada em português do Brasil e inglês. Pula aberturas/resumos e avança para o próximo episódio em Disney+, Netflix, Prime Video e Max. Na Netflix, também reconhece controles para pular resumos, créditos e anúncios quando disponibilizados pela plataforma. Na Crunchyroll, reconhece controles para pular introdução, resumo e créditos; a disponibilidade depende do título e da própria plataforma. O popup permite controlar as ações e preparar um e-mail de sugestão para `autoskipstreamings@outlook.com`.
 
 ## Instalação local
 

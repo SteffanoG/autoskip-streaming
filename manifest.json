@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
-  "version": "2.4.4",
+  "version": "2.4.5",
   "description": "__MSG_extensionDescription__",
   "default_locale": "pt_BR",
   "permissions": ["storage"],
@@ -21,10 +21,19 @@
         "https://*.disneyplus.com/*",
         "https://*.netflix.com/*",
         "https://*.primevideo.com/*",
-        "https://*.max.com/*",
-        "https://*.crunchyroll.com/*"
+        "https://*.max.com/*"
       ],
       "js": ["content.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://crunchyroll.com/*",
+        "https://*.crunchyroll.com/*",
+        "https://static.crunchyroll.com/*"
+      ],
+      "js": ["content.js"],
+      "all_frames": true,
       "run_at": "document_idle"
     }
   ]

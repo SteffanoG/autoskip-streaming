@@ -20,7 +20,7 @@ Assista sem precisar clicar toda vez em “Pular abertura” ou “Próximo epis
 - Manter as preferências salvas localmente no navegador.
 - Sugerir outro streaming: o popup prepara um e-mail para autoskipstreamings@outlook.com; você revisa e decide se quer enviá-lo.
 
-O AutoSkip inclui regras específicas para Disney+, Netflix, Prime Video e Max. Na Crunchyroll, reconhece o botão oficial “Skip Intro” quando ele aparece. A disponibilidade desse botão depende do título/episódio e dos recursos oferecidos pela própria plataforma. As plataformas podem alterar suas interfaces, então a compatibilidade pode variar.
+O AutoSkip inclui regras específicas para Disney+, Netflix, Prime Video e Max. Na Crunchyroll, reconhece controles para pular introduções, resumos e créditos quando disponíveis. A disponibilidade depende do título/episódio e dos recursos oferecidos pela própria plataforma. As plataformas podem alterar suas interfaces, então a compatibilidade pode variar.
 
 Para encontrar os controles, a extensão lê localmente rótulos e atributos acessíveis dos botões de reprodução nos domínios indicados. Esse conteúdo não é armazenado nem transmitido. As preferências ficam no armazenamento local do Chrome. A extensão não usa analytics nem transmite dados diretamente a servidores próprios ou terceiros. Sugestões só são enviadas se você decidir enviar a mensagem no seu aplicativo de e-mail.
 
