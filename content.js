@@ -7,7 +7,8 @@ const CONFIG = {
   checkIntervalMs: 1200,
   observerDebounceMs: 120,
   nextClickCooldownMs: 10000,
-  skipClickCooldownMs: 1500
+  skipClickCooldownMs: 1500,
+  netflixNextEndWindowSeconds: 10
 };
 const DEFAULT_SETTINGS = { enabled: true, skipIntro: true, nextEpisode: true };
 let settings = { ...DEFAULT_SETTINGS };
@@ -122,6 +123,15 @@ function isVisible(element) {
   return style.display !== "none" && style.visibility !== "hidden" && element.getClientRects().length > 0;
 }
 
+function isPlaybackEnding() {
+  return querySelectorAllDeep("video").some(video => {
+    if (!isVisible(video)) return false;
+    if (video.ended) return true;
+    const remaining = video.duration - video.currentTime;
+    return Number.isFinite(remaining) && remaining >= 0 && remaining <= CONFIG.netflixNextEndWindowSeconds;
+  });
+}
+
 function safeClick(element, action, platformName) {
   if (!element) return false;
   // Players may reuse the same DOM button for each episode. Rearm it only after
@@ -182,6 +192,9 @@ function runEngine() {
     if (tryText(skipTexts, "skip", name)) return;
   }
   if (settings.nextEpisode) {
+    // A Netflix may render a next-episode label before playback is ending.
+    // Wait until the active video reaches its final seconds before advancing.
+    if (rule?.id === "netflix" && !isPlaybackEnding()) return;
     if (rule && trySelectors(rule.nextSelectors, "next", name)) return;
     tryText(nextTexts, "next", name);
   }

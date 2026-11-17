@@ -45,6 +45,11 @@ async function run() {
       const page = await browser.newPage();
       await page.goto(`${baseUrl}/?platform=${scenario.platform}`, { waitUntil: 'domcontentloaded' });
       const expectedSkips = scenario.platform === 'netflix' ? 4 : 1;
+      if (scenario.platform === 'netflix') {
+        await page.waitForFunction(count => window.results.skip === count, expectedSkips, { timeout: 15000 });
+        assert.equal(await page.evaluate(() => window.results.next), undefined, 'Netflix não deve avançar antes do fim do vídeo');
+        await page.evaluate(() => { document.querySelector('#netflixEpisode').currentTime = 115; });
+      }
       await page.waitForFunction(({ expectNext, expectedSkips }) => window.results.skip === expectedSkips && (expectNext ? window.results.next === 1 : window.results.next === undefined), { expectNext: scenario.next, expectedSkips }, { timeout: 15000 });
       const results = await page.evaluate(() => window.results);
       const expected = scenario.next ? { skip: expectedSkips, next: 1 } : { skip: expectedSkips };
