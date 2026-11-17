@@ -26,10 +26,16 @@ const STREAMING_RULES = [
     id: "netflix",
     domain: "netflix.com",
     name: "Netflix",
-    skipSelectors: ['[data-uia="player-skip-intro"]', '.watch-video--skip-content-button', '.skip-credits'],
+    skipSelectors: [
+      '[data-uia="player-skip-intro"]',
+      '[data-uia="player-skip-recap"]',
+      '[data-uia="player-skip-ad"]',
+      '.watch-video--skip-content-button',
+      '.skip-credits'
+    ],
     nextSelectors: ['[data-uia="next-episode-seamless-button"]'],
-    skipTexts: ["pular abertura", "skip intro"],
-    nextTexts: ["próximo episódio", "next episode"]
+    skipTexts: ["pular abertura", "skip intro", "pular resumo", "skip recap", "pular anúncio", "pular anuncio", "skip ad", "pular créditos", "pular creditos", "skip credits"],
+    nextTexts: []
   },
   {
     id: "primevideo",
@@ -106,17 +112,25 @@ function isDismissButton(element) {
   );
 }
 
-function isVisibleAndEnabled(element) {
-  if (element.disabled || element.getAttribute("aria-disabled") === "true") return false;
+function isEnabled(element) {
+  return !element.disabled && element.getAttribute("aria-disabled") !== "true";
+}
+
+function isVisible(element) {
   if (element.closest("[hidden], [aria-hidden='true'], [inert]")) return false;
   const style = window.getComputedStyle(element);
   return style.display !== "none" && style.visibility !== "hidden" && element.getClientRects().length > 0;
 }
 
 function safeClick(element, action, platformName) {
-  if (!element || clickedElements.has(element) || isDismissButton(element) || !isVisibleAndEnabled(element)) {
+  if (!element) return false;
+  // Players may reuse the same DOM button for each episode. Rearm it only after
+  // the control disappears, so it can be clicked again at the next episode end.
+  if (!isVisible(element)) {
+    clickedElements.delete(element);
     return false;
   }
+  if (clickedElements.has(element) || isDismissButton(element) || !isEnabled(element)) return false;
 
   const now = Date.now();
   const cooldown = action === "next" ? CONFIG.nextClickCooldownMs : CONFIG.skipClickCooldownMs;

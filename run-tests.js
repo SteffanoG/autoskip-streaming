@@ -44,9 +44,10 @@ async function run() {
     for (const scenario of SCENARIOS) {
       const page = await browser.newPage();
       await page.goto(`${baseUrl}/?platform=${scenario.platform}`, { waitUntil: 'domcontentloaded' });
-      await page.waitForFunction(expectNext => window.results.skip === 1 && (expectNext ? window.results.next === 1 : window.results.next === undefined), scenario.next, { timeout: 5000 });
+      const expectedSkips = scenario.platform === 'netflix' ? 4 : 1;
+      await page.waitForFunction(({ expectNext, expectedSkips }) => window.results.skip === expectedSkips && (expectNext ? window.results.next === 1 : window.results.next === undefined), { expectNext: scenario.next, expectedSkips }, { timeout: 15000 });
       const results = await page.evaluate(() => window.results);
-      const expected = scenario.next ? { skip: 1, next: 1 } : { skip: 1 };
+      const expected = scenario.next ? { skip: expectedSkips, next: 1 } : { skip: expectedSkips };
       assert.deepEqual(results, expected, `Ações incorretas no cenário ${scenario.platform}`);
       console.log(`✓ ${scenario.platform}: ações corretas`);
       await page.close();

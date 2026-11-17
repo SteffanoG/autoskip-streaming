@@ -28,6 +28,9 @@
   <section class="fixture" data-platform="netflix">
     <h2>Netflix</h2>
     <button data-uia="player-skip-intro" onclick="recordSuccess('skip', this)">Pular Abertura</button>
+    <button data-uia="player-skip-recap" onclick="recordSuccess('skip', this)">Pular resumo</button>
+    <button data-uia="player-skip-ad" onclick="recordSuccess('skip', this)">Pular anúncio</button>
+    <button class="skip-credits" onclick="recordSuccess('skip', this)">Pular créditos</button>
     <button data-uia="next-episode-seamless-button" onclick="recordSuccess('next', this)">Próximo Episódio</button>
   </section>
 
@@ -71,6 +74,14 @@
       window.results[action] = false;
       document.querySelector('#results').textContent = JSON.stringify(window.results);
     }
+    // Ativa explicitamente o avanço nos cenários para testar o recurso opcional.
+    window.chrome = {
+      storage: {
+        local: { get: (defaults, callback) => callback({ ...defaults, settings: { ...defaults.settings, nextEpisode: true } }) },
+        onChanged: { addListener() {} }
+      },
+      runtime: { get lastError() { return null; } }
+    };
   </script>
   <script src="content.js"></script>
 </body>
