@@ -27,12 +27,15 @@
 
   <section class="fixture" data-platform="netflix">
     <h2>Netflix</h2>
-    <video id="netflixEpisode" style="width:320px;height:180px"></video>
+    <div id="netflixPlayer" style="position:relative;width:320px;height:180px">
+      <video id="netflixEpisode" style="width:320px;height:180px"></video>
+      <button style="position:absolute;right:8px;bottom:8px" onclick="recordSuccess('next', this)">Próximo Episódio</button>
+    </div>
+    <button id="netflixBrowseDecoy" onclick="recordFailure('wrongNext')">Próximo Episódio</button>
     <button data-uia="player-skip-intro" onclick="recordSuccess('skip', this)">Pular Abertura</button>
     <button data-uia="player-skip-recap" onclick="recordSuccess('skip', this)">Pular resumo</button>
     <button data-uia="player-skip-ad" onclick="recordSuccess('skip', this)">Pular anúncio</button>
     <button class="skip-credits" onclick="recordSuccess('skip', this)">Pular créditos</button>
-    <button onclick="recordSuccess('next', this)">Próximo Episódio</button>
   </section>
 
   <section class="fixture" data-platform="primevideo">
@@ -64,11 +67,6 @@
     document.querySelector('#scenario').textContent = `Cenário: ${selected}`;
     document.querySelectorAll('[data-platform]').forEach(section => {
       section.hidden = section.dataset.platform !== selected;
-    });
-    const netflixEpisode = document.querySelector('#netflixEpisode');
-    Object.defineProperties(netflixEpisode, {
-      duration: { configurable: true, value: 120 },
-      currentTime: { configurable: true, writable: true, value: 60 }
     });
     window.results = {};
     function recordSuccess(action, button) {

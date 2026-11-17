@@ -46,9 +46,8 @@ async function run() {
       await page.goto(`${baseUrl}/?platform=${scenario.platform}`, { waitUntil: 'domcontentloaded' });
       const expectedSkips = scenario.platform === 'netflix' ? 4 : 1;
       if (scenario.platform === 'netflix') {
-        await page.waitForFunction(count => window.results.skip === count, expectedSkips, { timeout: 15000 });
-        assert.equal(await page.evaluate(() => window.results.next), undefined, 'Netflix não deve avançar antes do fim do vídeo');
-        await page.evaluate(() => { document.querySelector('#netflixEpisode').currentTime = 115; });
+        await page.waitForFunction(({ expectedSkips }) => window.results.skip === expectedSkips && window.results.next === 1, { expectedSkips }, { timeout: 15000 });
+        assert.equal(await page.evaluate(() => window.results.wrongNext), undefined, 'Netflix não deve clicar em rótulos fora do player');
       }
       await page.waitForFunction(({ expectNext, expectedSkips }) => window.results.skip === expectedSkips && (expectNext ? window.results.next === 1 : window.results.next === undefined), { expectNext: scenario.next, expectedSkips }, { timeout: 15000 });
       const results = await page.evaluate(() => window.results);

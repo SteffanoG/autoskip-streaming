@@ -7,8 +7,7 @@ const CONFIG = {
   checkIntervalMs: 1200,
   observerDebounceMs: 120,
   nextClickCooldownMs: 10000,
-  skipClickCooldownMs: 1500,
-  netflixNextEndWindowSeconds: 10
+  skipClickCooldownMs: 1500
 };
 const DEFAULT_SETTINGS = { enabled: true, skipIntro: true, nextEpisode: true };
 let settings = { ...DEFAULT_SETTINGS };
@@ -123,12 +122,15 @@ function isVisible(element) {
   return style.display !== "none" && style.visibility !== "hidden" && element.getClientRects().length > 0;
 }
 
-function isPlaybackEnding() {
+function isNetflixPlayerControl(element) {
+  const control = element.getBoundingClientRect();
+  const centerX = control.left + control.width / 2;
+  const centerY = control.top + control.height / 2;
   return querySelectorAllDeep("video").some(video => {
     if (!isVisible(video)) return false;
-    if (video.ended) return true;
-    const remaining = video.duration - video.currentTime;
-    return Number.isFinite(remaining) && remaining >= 0 && remaining <= CONFIG.netflixNextEndWindowSeconds;
+    const player = video.getBoundingClientRect();
+    return centerX >= player.left - 24 && centerX <= player.right + 24 &&
+      centerY >= player.top - 24 && centerY <= player.bottom + 24;
   });
 }
 
@@ -169,11 +171,11 @@ function trySelectors(selectors, action, platformName) {
   return false;
 }
 
-function tryText(labels, action, platformName) {
+function tryText(labels, action, platformName, predicate = () => true) {
   const candidates = querySelectorAllDeep("button, a, [role='button']");
   for (const element of candidates) {
     const label = getLabel(element);
-    if (label && labels.some(text => label.includes(text)) && safeClick(element, action, platformName)) {
+    if (label && labels.some(text => label.includes(text)) && predicate(element) && safeClick(element, action, platformName)) {
       return true;
     }
   }
@@ -186,17 +188,15 @@ function runEngine() {
   const name = rule?.name || "plataforma compatível";
   const skipTexts = rule?.skipTexts || ["skip intro", "pular abertura", "pular introdução", "skip recap", "skip credit"];
   const nextTexts = rule?.nextTexts || ["next episode", "próximo episódio", "up next"];
+  const textControlPredicate = rule?.id === "netflix" ? isNetflixPlayerControl : undefined;
 
   if (settings.skipIntro) {
     if (rule && trySelectors(rule.skipSelectors, "skip", name)) return;
-    if (tryText(skipTexts, "skip", name)) return;
+    if (tryText(skipTexts, "skip", name, textControlPredicate)) return;
   }
   if (settings.nextEpisode) {
-    // A Netflix may render a next-episode label before playback is ending.
-    // Wait until the active video reaches its final seconds before advancing.
-    if (rule?.id === "netflix" && !isPlaybackEnding()) return;
     if (rule && trySelectors(rule.nextSelectors, "next", name)) return;
-    tryText(nextTexts, "next", name);
+    tryText(nextTexts, "next", name, textControlPredicate);
   }
 }
 
