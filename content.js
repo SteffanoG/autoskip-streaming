@@ -60,12 +60,16 @@ const STREAMING_RULES = [
     domain: "crunchyroll.com",
     name: "Crunchyroll",
     skipSelectors: [
+      'button[data-testid="skipButton"]',
+      '[data-testid="skipButton"] button',
+      '[data-testid="skipButton"] [role="button"]',
       '[data-testid="skipButton"] [tabindex="0"]',
       '[data-testid="skipButton"]',
       'button[aria-label*="Skip Intro" i]',
       'button[aria-label*="Skip Recap" i]',
       'button[aria-label*="Skip Credits" i]',
       'button[aria-label*="Pular abertura" i]',
+      'button[aria-label*="Pular introdução" i]',
       'button[aria-label*="Pular resumo" i]',
       'button[aria-label*="Pular créditos" i]',
       'button[data-testid*="skip-intro" i]',
@@ -74,7 +78,7 @@ const STREAMING_RULES = [
     ],
     nextSelectors: [],
     skipTexts: [
-      "skip intro", "pular abertura", "skip recap", "pular resumo",
+      "skip intro", "pular abertura", "pular introdução", "skip recap", "pular resumo",
       "skip credits", "pular créditos", "skip outro", "skip preview",
       "pular prévia", "pular previa"
     ],
@@ -132,11 +136,28 @@ function isEnabled(element) {
   return !element.disabled && element.getAttribute("aria-disabled") !== "true";
 }
 
+function getClickTarget(element) {
+  // O player pode pôr data-testid no contêiner, mas registrar o clique no
+  // botão interno. Disparar .click() no contêiner não ativa esse controle.
+  const interactiveSelector = "button, a, [role='button']";
+  if (element.matches(interactiveSelector)) return element;
+
+  const descendant = Array.from(element.querySelectorAll(interactiveSelector))
+    .find(candidate => isVisible(candidate) && isEnabled(candidate));
+  if (descendant) return descendant;
+
+  return element.closest(interactiveSelector) ||
+    element.closest("[tabindex='0']") || element;
+}
+
 function isVisible(element) {
-  if (element.closest("[hidden], [aria-hidden='true'], [inert], [class~='kat:opacity-0'], [class~='kat:pointer-events-none']")) return false;
+  // aria-hidden controla leitores de tela, não a visibilidade visual. A Crunchyroll
+  // pode mantê-lo no botão focado mesmo após emitir um aviso de aria-hidden bloqueado.
+  if (element.closest("[hidden], [inert]")) return false;
   const style = window.getComputedStyle(element);
   return style.display !== "none" && style.visibility !== "hidden" &&
-    Number(style.opacity) !== 0 && element.getClientRects().length > 0;
+    Number(style.opacity) !== 0 && style.pointerEvents !== "none" &&
+    element.getClientRects().length > 0;
 }
 
 function isNetflixPlayerControl(element) {
@@ -153,6 +174,7 @@ function isNetflixPlayerControl(element) {
 
 function safeClick(element, action, platformName) {
   if (!element) return false;
+  element = getClickTarget(element);
   // Players may reuse the same DOM button for each episode. Rearm it only after
   // the control disappears, so it can be clicked again at the next episode end.
   if (!isVisible(element)) {

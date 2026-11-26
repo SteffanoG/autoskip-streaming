@@ -11,11 +11,24 @@ Manifest V3 extension localized in Brazilian Portuguese and English. It skips in
 
 The extension reads playback control labels and accessible attributes only on the domains declared in the manifest. It does not transmit or save page text. Service interfaces and button availability may change.
 
-## Install locally
+## Install
 
-1. Open `chrome://extensions` in Chrome.
-2. Turn on **Developer mode**.
-3. Click **Load unpacked** and select this project folder.
+Desktop only. You do not need Node or `npm install`.
+
+1. Download the [project ZIP](https://github.com/SteffanoG/autoskip-streaming/archive/refs/heads/main.zip) and extract it to a permanent folder. The extension stops working if the folder is deleted or moved.
+2. Open `chrome://extensions` in Chrome.
+3. Turn on **Developer mode**.
+4. Click **Load unpacked** and select the folder that contains `manifest.json` (`autoskip-streaming-main` in the extracted ZIP).
+5. Reload any streaming tabs that were already open.
+
+### Update
+
+Updates are manual.
+
+- **ZIP:** download it again, replace the files in the same folder, and click reload on the extension card in `chrome://extensions`.
+- **Git:** clone once with `git clone https://github.com/SteffanoG/autoskip-streaming.git`. To update, run `git pull` in that folder and reload the extension.
+
+After reloading the extension, also reload any open streaming tabs.
 
 The `storage` permission saves popup preferences in Chrome local storage. Content scripts are limited to the supported HTTPS domains in `manifest.json`.
 

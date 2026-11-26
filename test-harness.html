@@ -52,7 +52,8 @@
 
   <section class="fixture" data-platform="crunchyroll">
     <h2>Crunchyroll</h2>
-    <div data-testid="skipButton"><div tabindex="0" onclick="recordSuccess('skip', this)">Skip Intro</div></div>
+    <div data-testid="skipButton"><button onclick="recordSuccess('skip', this)">Skip Intro</button></div>
+    <button aria-label="Pular introdução" aria-hidden="true" onclick="recordSuccess('skip', this)">Pular introdução</button>
     <button aria-label="Skip Recap" onclick="recordSuccess('skip', this)">Skip Recap</button>
     <button aria-label="Skip Credits" onclick="recordSuccess('skip', this)">Skip Credits</button>
     <button aria-label="Next Episode" onclick="recordSuccess('next', this)">Next Episode</button>

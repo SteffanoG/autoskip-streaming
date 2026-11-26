@@ -45,7 +45,7 @@ async function run() {
     for (const scenario of SCENARIOS) {
       const page = await browser.newPage();
       await page.goto(`${baseUrl}/?platform=${scenario.platform}`, { waitUntil: 'domcontentloaded' });
-      const expectedSkips = scenario.platform === 'netflix' ? 4 : scenario.platform === 'crunchyroll' ? 3 : 1;
+      const expectedSkips = scenario.platform === 'netflix' ? 4 : scenario.platform === 'crunchyroll' ? 4 : 1;
       if (scenario.platform === 'netflix') {
         await page.waitForFunction(({ expectedSkips }) => window.results.skip === expectedSkips && window.results.next === 1, { expectedSkips }, { timeout: 15000 });
         assert.equal(await page.evaluate(() => window.results.wrongNext), undefined, 'Netflix não deve clicar em rótulos fora do player');
@@ -60,6 +60,7 @@ async function run() {
 
     const crunchyScript = MANIFEST.content_scripts.find(script => script.matches.some(match => match.includes('crunchyroll.com')));
     assert.equal(crunchyScript?.all_frames, true, 'Crunchyroll deve executar o script também dentro do iframe do player');
+    assert.equal(crunchyScript?.match_origin_as_fallback, true, 'Crunchyroll deve cobrir iframes about:blank/blob criados pelo player');
 
     const popup = await browser.newPage();
     await popup.addInitScript(({ catalogs }) => {
