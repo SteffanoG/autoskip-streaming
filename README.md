@@ -4,11 +4,24 @@ Versão em inglês: [README.en.md](README.en.md).
 
 Extensão Manifest V3 localizada em português do Brasil e inglês. Pula aberturas/resumos e avança para o próximo episódio em Disney+, Netflix, Prime Video e Max. Na Netflix, também reconhece controles para pular resumos, créditos e anúncios quando disponibilizados pela plataforma. Na Crunchyroll, reconhece controles para pular introdução, resumo e créditos; a disponibilidade depende do título e da própria plataforma. O popup permite controlar as ações e preparar um e-mail de sugestão para `autoskipstreamings@outlook.com`.
 
-## Instalação local
+## Instalação
 
-1. Abra `chrome://extensions` no Chrome.
-2. Ative **Modo do desenvolvedor**.
-3. Escolha **Carregar sem compactação** e selecione esta pasta.
+Funciona no computador. Não precisa instalar Node nem rodar `npm install`.
+
+1. Baixe o [ZIP do projeto](https://github.com/SteffanoG/autoskip-streaming/archive/refs/heads/main.zip) e extraia em uma pasta fixa. Se a pasta for apagada ou movida, a extensão para de funcionar.
+2. Abra `chrome://extensions` no Chrome.
+3. Ative **Modo do desenvolvedor**.
+4. Escolha **Carregar sem compactação** e selecione a pasta que contém o arquivo `manifest.json` (no ZIP extraído, `autoskip-streaming-main`).
+5. Recarregue as abas de streaming que já estavam abertas.
+
+### Atualização
+
+A atualização é manual.
+
+- **Pelo ZIP:** baixe de novo, substitua os arquivos na mesma pasta e clique em recarregar no cartão da extensão em `chrome://extensions`.
+- **Pelo git:** clone uma vez com `git clone https://github.com/SteffanoG/autoskip-streaming.git`. Para atualizar, rode `git pull` na pasta e recarregue a extensão.
+
+Depois de recarregar a extensão, recarregue também as abas de streaming abertas.
 
 O manifesto limita a injeção aos domínios dos serviços listados. A permissão `storage` salva as preferências do popup no perfil local do Chrome.
 
